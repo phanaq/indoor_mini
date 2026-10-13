@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ComEd Wednesday Night Indoor</title>
+<style>
+  :root { --bg:#f5f6f8; --card:#fff; --text:#1c2230; --muted:#5d6678; --line:#dde1e9; --accent:#1f5eff; --ok:#12805c; --warn:#b45309; --bad:#c0262d; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#12151c; --card:#1b202b; --text:#e8ebf2; --muted:#9aa3b5; --line:#2c3342; --accent:#6e96ff; --ok:#3ecf9e; --warn:#f0a43a; --bad:#ff7b80; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg); color:var(--text); }
+  main { max-width:760px; margin:0 auto; padding:16px; }
+  h1 { font-size:1.35rem; margin:8px 0 2px; }
+  h2 { font-size:1.1rem; margin:0 0 8px; }
+  h3 { font-size:1rem; margin:12px 0 6px; }
+  .sub { color:var(--muted); margin:0 0 16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:12px; }
+  .intro { white-space:pre-wrap; }
+  label { display:block; font-size:.9rem; color:var(--muted); margin:8px 0 3px; }
+  input[type=text], input[type=email], input[type=password], input[type=number], input[type=date], textarea, select {
+    width:100%; padding:9px 10px; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--text); font:inherit;
+  }
+  textarea { min-height:110px; }
+  button { font:inherit; padding:9px 14px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  button.secondary { background:transparent; color:var(--accent); }
+  button.danger { background:transparent; color:var(--bad); border-color:var(--bad); }
+  button:disabled { opacity:.5; cursor:default; }
+  .row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .row > * { flex:0 0 auto; }
+  .grow { flex:1 1 140px !important; }
+  .error { color:var(--bad); min-height:1.2em; margin:8px 0 0; }
+  .muted { color:var(--muted); }
+  .signup { display:flex; gap:10px; align-items:center; font-weight:600; cursor:pointer; color:var(--text); font-size:1rem; margin:6px 0; }
+  .signup input { width:24px; height:24px; }
+  .status { font-weight:600; }
+  .confirmed { color:var(--ok); }
+  .waitlist { color:var(--warn); }
+  .counts { color:var(--muted); font-size:.92rem; }
+  .pay { background:var(--bg); border:1px dashed var(--line); border-radius:8px; padding:8px 10px; margin:8px 0; font-size:.95rem; }
+  details { margin-top:8px; }
+  summary { cursor:pointer; color:var(--muted); font-size:.92rem; }
+  .date { padding:0; }
+  .date > summary { display:flex; flex-wrap:wrap; gap:4px 12px; align-items:center; padding:14px 40px 14px 14px; list-style:none; position:relative; color:var(--text); }
+  .date > summary::-webkit-details-marker { display:none; }
+  .date > summary::after { content:''; position:absolute; right:16px; top:50%; width:8px; height:8px; margin-top:-6px; border-right:2px solid var(--muted); border-bottom:2px solid var(--muted); transform:rotate(45deg); transition:transform .15s; }
+  .date[open] > summary::after { transform:rotate(-135deg); margin-top:-2px; }
+  .date > :not(summary) { margin-left:14px; margin-right:14px; }
+  .date > :last-child { margin-bottom:14px; }
+  .date-title { font-size:1.1rem; font-weight:700; }
+  .game-type { font-size:.8rem; font-weight:600; padding:1px 8px; border-radius:99px; border:1px solid var(--line); color:var(--muted); }
+  .game-type.wmp_only { color:var(--accent); border-color:var(--accent); }
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  ol, ul { margin:4px 0 4px 20px; padding:0; }
+  .tabs { display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap; }
+  .tabs button { background:transparent; color:var(--text); border-color:var(--line); }
+  .tabs button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .badge { display:inline-block; min-width:1.4em; padding:0 6px; margin-left:6px; border-radius:99px; background:var(--bad); color:#fff; font-size:.8rem; text-align:center; }
+  .table-wrap { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:.9rem; }
+  th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  tr.warn td { background:rgba(240,164,58,.18); }
+  .late { color:var(--bad); font-weight:700; }
+  th.sortable { cursor:pointer; user-select:none; }
+  .warnmsg { color:var(--warn); font-weight:600; white-space:normal; }
+  .fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:8px; }
+  footer { margin:24px 0; text-align:center; }
+  footer a { color:var(--muted); cursor:pointer; text-decoration:underline; font-size:.9rem; }
+  [hidden] { display:none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>ComEd Wednesday Night Indoor</h1>
+  <p class="sub">Wednesdays 9:30-10:30 PM</p>
+  <div id="app"></div>
+  <footer><a id="modeLink"></a></footer>
+</main>
+<script>
+'use strict';
+
+function h(tag, props, ...children) {
+  const el = document.createElement(tag);
+  for (const [k, val] of Object.entries(props || {})) {
+    if (k.startsWith('on')) el.addEventListener(k.slice(2), val);
+    else if (k === 'class') el.className = val;
+    else if (k in el) el[k] = val;
+    else el.setAttribute(k, val);
+  }
+  for (const c of children.flat()) {
+    if (c === null || c === undefined || c === false) continue;
+    el.append(c.nodeType ? c : document.createTextNode(String(c)));
+  }
+  return el;
+}
+
+async function api(method, url, body) {
+  const res = await fetch(url, {
+    method,
+    headers: method === 'GET' ? {} : { 'Content-Type': 'application/json' },
+    body: method === 'GET' ? undefined : JSON.stringify(body || {}),
+    credentials: 'same-origin',
+  });
+  let data = {};
+  try { data = await res.json(); } catch {}
+  if (!res.ok) {
+    const err = new Error(data.error || 'Request failed');
+    err.status = res.status;
+    throw err;
+  }
+  return data;
+}
+
+const money = (n) => (Number.isInteger(n) ? `$${n}` : `$${n.toFixed(2)}`);
+const app = document.getElementById('app');
+const modeLink = document.getElementById('modeLink');
+let mode = location.hash === '#admin' ? 'admin' : 'player';
+let pollTimer = null;
+
+function setMode(next) {
+  mode = next;
+  history.replaceState(null, '', next === 'admin' ? '#admin' : location.pathname);
+  start();
+}
+
+function errorBox() {
+  return h('p', { class: 'error', role: 'alert' });
+}
+
+function guard(box, fn) {
+  return async (...args) => {
+    box.textContent = '';
+    try { await fn(...args); } catch (err) { box.textContent = err.message; }
+  };
+}
+
+function start() {
+  clearInterval(pollTimer);
+  modeLink.textContent = mode === 'admin' ? 'Back to signup sheet' : 'Admin';
+  modeLink.onclick = () => setMode(mode === 'admin' ? 'player' : 'admin');
+  if (mode === 'admin') loadAdmin();
+  else loadPlayer();
+}
+
+/* ---------- player ---------- */
+
+async function loadPlayer() {
+  clearInterval(pollTimer);
+  try {
+    renderPlayer(await api('GET', '/api/state'));
+  } catch (err) {
+    app.replaceChildren(h('p', { class: 'error' }, err.message));
+  }
+  pollTimer = setInterval(async () => {
+    if (document.hidden || document.activeElement?.closest('#app form')) return;
+    try { renderPlayer(await api('GET', '/api/state')); } catch {}
+  }, 30000);
+}
+
+function renderPlayer(state) {
+  app.replaceChildren(...[state.me ? playerView(state) : loginView(state)].flat(Infinity).filter(Boolean));
+}
+
+function loginView(state) {
+  const err = errorBox();
+  const email = h('input', { type: 'email', id: 'email', autocomplete: 'email', required: true });
+  const name = h('input', { type: 'text', id: 'name', autocomplete: 'name', maxLength: 60 });
+  const category = h('select', { id: 'category' },
+    h('option', { value: '', disabled: true, selected: true }, 'Select...'),
+    h('option', { value: 'WMP' }, 'WMP'), h('option', { value: 'MMP' }, 'MMP'));
+  const extra = h('div', { hidden: true },
+    h('label', { for: 'name' }, 'Name'), name,
+    h('label', { for: 'category' }, 'Match category'), category);
+  const submit = h('button', { type: 'submit' }, 'Continue');
+  const form = h('form', {
+    onsubmit: guard(err, async (e) => {
+      e.preventDefault();
+      const body = { email: email.value };
+      if (!extra.hidden) {
+        if (!category.value) throw new Error('Please choose a match category.');
+        body.name = name.value;
+        body.category = category.value;
+      }
+      const res = await api('POST', '/api/login', body);
+      if (res.needsName) { extra.hidden = false; name.focus(); return; }
+      renderPlayer(res);
+    }),
+  }, h('label', { for: 'email' }, 'Email'), email, extra, h('div', { class: 'row', style: 'margin-top:12px' }, submit), err);
+  return [
+    h('div', { class: 'card intro' }, state.settings.intro),
+    h('div', { class: 'card' }, h('h2', {}, 'Log in to sign up'), form),
+    state.dates.map((d) => dateCard(d, null)),
+  ];
+}
+
+function playerView(state) {
+  const err = errorBox();
+  const category = h('select', {
+    onchange: guard(err, async () => renderPlayer(await api('PUT', '/api/me', { category: category.value }))),
+  }, h('option', { value: 'WMP' }, 'WMP'), h('option', { value: 'MMP' }, 'MMP'));
+  category.value = state.me.category;
+
+  const profile = h('div', { class: 'card' },
+    h('div', { class: 'row' },
+      h('div', { class: 'grow' }, h('strong', {}, state.me.name), h('div', { class: 'muted' }, state.me.email)),
+      h('button', { class: 'secondary', onclick: guard(err, async () => { await api('POST', '/api/logout'); loadPlayer(); }) }, 'Log out')),
+    h('label', {}, 'My match category (applies to dates you sign up for from now on)'), category, err);
+
+  return [
+    h('div', { class: 'card intro' }, state.settings.intro),
+    profile,
+    state.dates.length ? state.dates.map((d) => dateCard(d, err)) : h('p', { class: 'muted' }, 'No dates are open yet.'),
+  ];
+}
+
+function countsText(cat, c) {
+  return `${cat} ${c.confirmed}/${c.threshold}` + (c.waitlisted ? ` · ${c.waitlisted} waitlisted` : '');
+}
+
+function nameList(list, ordered) {
+  return list.length ? h(ordered ? 'ol' : 'ul', {}, list.map((n) => h('li', {}, n))) : h('p', { class: 'muted' }, '—');
+}
+
+const closedDates = new Set();
+
+function dateCard(d, err) {
+  const m = d.mine;
+  const readOnly = !err;
+  const box = h('input', {
+    type: 'checkbox',
+    checked: !!m,
+    onchange: async () => {
+      err.textContent = '';
+      box.disabled = true;
+      try {
+        renderPlayer(await api('POST', m ? '/api/unregister' : '/api/register', { dateId: d.id }));
+      } catch (e) {
+        err.textContent = e.message;
+        box.checked = !!m;
+        box.disabled = false;
+      }
+    },
+  });
+  let statusEl = null;
+  if (m) {
+    const label = m.status === 'confirmed' ? 'Confirmed' : `Waitlist #${m.position}`;
+    statusEl = h('div', { class: `status ${m.status}` }, `${label} (${m.category})`, m.paid && m.status === 'confirmed' ? ' · Paid' : '');
+  }
+  const column = (cat) => h('div', {},
+    h('h3', {}, cat),
+    h('strong', {}, 'Confirmed'), nameList(d.names[cat].confirmed, false),
+    d.names[cat].waitlist.length ? [h('strong', {}, 'Waitlist'), nameList(d.names[cat].waitlist, true)] : null);
+  const card = h('details', { class: 'card date', open: !closedDates.has(d.id) },
+    h('summary', {},
+      h('span', { class: 'date-title' }, d.label),
+      h('span', { class: `game-type ${d.gameType}` }, d.gameType === 'wmp_only' ? 'WMP only' : 'Mixed'),
+      h('span', { class: 'counts' }, countsText('WMP', d.counts.WMP), '  |  ', countsText('MMP', d.counts.MMP))),
+    readOnly ? null : h('label', { class: 'signup' }, box, m ? 'I am attending' : 'Sign me up'),
+    statusEl,
+    h('div', { class: 'cols' }, column('WMP'), column('MMP')));
+  card.addEventListener('toggle', () => { if (card.open) closedDates.delete(d.id); else closedDates.add(d.id); });
+  return card;
+}
+
+/* ---------- admin ---------- */
+
+let adminTab = 'dates';
+let adminState = null;
+let adminEvents = null;
+let adminPlayers = null;
+const activityFilter = { dateId: '', type: '', q: '' };
+const when = (iso) => new Date(iso).toLocaleString();
+
+async function loadAdmin() {
+  try {
+    adminState = await api('GET', '/api/admin/state');
+    renderAdmin();
+  } catch (err) {
+    if (err.status === 401) renderAdminLogin();
+    else app.replaceChildren(h('p', { class: 'error' }, err.message));
+  }
+}
+
+function renderAdminLogin() {
+  const err = errorBox();
+  const pw = h('input', { type: 'password', id: 'pw', autocomplete: 'current-password', required: true });
+  app.replaceChildren(h('div', { class: 'card' }, h('h2', {}, 'Admin login'),
+    h('form', {
+      onsubmit: guard(err, async (e) => {
+        e.preventDefault();
+        await api('POST', '/api/admin/login', { password: pw.value });
+        loadAdmin();
+      }),
+    }, h('label', { for: 'pw' }, 'Password'), pw, h('div', { class: 'row', style: 'margin-top:12px' }, h('button', { type: 'submit' }, 'Log in')), err)));
+}
+
+function adminAction(err, method, url, body) {
+  return guard(err, async () => {
+    adminState = await api(method, url, body);
+    renderAdmin();
+  });
+}
+
+function renderAdmin() {
+  const err = errorBox();
+  const tab = (id, text, badge) => h('button', { class: adminTab === id ? 'active' : '', onclick: () => { adminTab = id; adminEvents = null; adminPlayers = null; renderAdmin(); } },
+    text, badge ? h('span', { class: 'badge' }, badge) : null);
+  const nav = h('div', { class: 'tabs' },
+    tab('dates', 'Dates & rosters'),
+    tab('settings', 'Settings'),
+    tab('refunds', 'Refunds', adminState.owedRefunds || null),
+    tab('activity', 'Activity'),
+    tab('players', 'Players'),
+    h('button', { onclick: () => { window.location.href = '/api/admin/export.csv'; } }, 'Export CSV'),
+    h('button', { onclick: () => { window.location.href = '/api/admin/events.csv'; } }, 'Export events CSV'),
+    h('button', { class: 'secondary', onclick: guard(err, async () => { await api('POST', '/api/admin/logout'); renderAdminLogin(); }) }, 'Log out'));
+  const body = adminTab === 'settings' ? settingsTab()
+    : adminTab === 'refunds' ? refundsTab()
+    : adminTab === 'activity' ? activityTab()
+    : adminTab === 'players' ? playersTab()
+    : datesTab();
+  app.replaceChildren(...[nav, err, body].flat(Infinity).filter(Boolean));
+}
+
+function datesTab() {
+  const err = errorBox();
+  return [err, adminState.dates.map((d) => adminDateCard(d, err))];
+}
+
+function adminDateCard(d, err) {
+  const gameType = h('select', {}, h('option', { value: 'mixed' }, 'Mixed'), h('option', { value: 'wmp_only' }, 'WMP only'));
+  gameType.value = d.gameType || 'mixed';
+  const mmp = h('input', { type: 'number', min: 0, max: 500, step: 1, value: d.mmp });
+  const wmp = h('input', { type: 'number', min: 0, max: 500, step: 1, value: d.wmp });
+  const save = adminAction(err, 'PUT', '/api/admin/dates');
+  const field = (text, input) => h('div', {}, h('label', {}, text), input);
+
+  const rows = [];
+  for (const cat of ['MMP', 'WMP']) {
+    for (const r of d.rosters[cat].rows) {
+      const paid = h('input', { type: 'checkbox', checked: r.paid, onchange: () =>
+        adminAction(err, 'POST', '/api/admin/paid', { dateId: d.id, email: r.email, paid: paid.checked })() });
+      const rm = h('button', { class: 'danger', onclick: () => {
+        const refundNote = r.paid ? ' They are marked paid, so a refund will be recorded as owed.' : '';
+        if (confirm(`Remove ${r.name} from ${d.label}?${refundNote}`)) adminAction(err, 'POST', '/api/admin/remove-registration', { dateId: d.id, email: r.email })();
+      } }, 'Remove');
+      const attendance = r.status === 'confirmed' ? h('select', {
+        value: r.attendance || '',
+        onchange: () => adminAction(err, 'POST', '/api/admin/attendance', { dateId: d.id, email: r.email, attendance: attendance.value || null })(),
+      }, h('option', { value: '' }, '-'), h('option', { value: 'attended' }, 'Attended'), h('option', { value: 'no_show' }, 'No-show')) : null;
+      if (attendance) attendance.value = r.attendance || '';
+      rows.push(h('tr', { class: r.warning ? 'warn' : '' },
+        h('td', {}, r.name), h('td', {}, r.email), h('td', {}, cat),
+        h('td', {}, r.status === 'confirmed' ? 'Confirmed' : `Waitlist #${r.position}`),
+        h('td', {}, when(r.signedUpAt)),
+        h('td', {}, paid), h('td', {}, attendance), h('td', {}, rm),
+        h('td', { class: 'warnmsg' }, r.warning ? 'Paid but demoted to waitlist' : '')));
+    }
+  }
+
+  return h('div', { class: 'card' },
+    h('h2', {}, d.label),
+    h('div', { class: 'fields' }, field('Game type', gameType), field('WMP spots', wmp), field('MMP spots', mmp)),
+    h('div', { class: 'row', style: 'margin:10px 0' },
+      h('button', { onclick: () => save({ id: d.id, gameType: gameType.value, mmp: Number(mmp.value), wmp: Number(wmp.value) }) }, 'Save')),
+    rows.length
+      ? h('div', { class: 'table-wrap' }, h('table', {},
+          h('thead', {}, h('tr', {}, ['Name', 'Email', 'Cat', 'Status', 'Signed up', 'Paid', 'Attendance', '', ''].map((t) => h('th', {}, t)))),
+          h('tbody', {}, rows)))
+      : h('p', { class: 'muted' }, 'No registrations yet.'));
+}
+
+function settingsTab() {
+  const err = errorBox();
+  const s = adminState.settings;
+  const intro = h('textarea', { value: s.intro, maxLength: 4000 });
+  const startTime = h('input', { type: 'time', value: s.gameStartTime, required: true });
+  const zones = h('datalist', { id: 'zones' }, (Intl.supportedValuesOf ? Intl.supportedValuesOf('timeZone') : []).map((z) => h('option', { value: z })));
+  const timezone = h('input', { type: 'text', value: s.timezone, maxLength: 64, required: true });
+  timezone.setAttribute('list', 'zones');
+  const lateHours = h('input', { type: 'number', min: 0, max: 720, step: 'any', value: s.lateCancelHours, required: true });
+  return h('form', {
+    class: 'card',
+    onsubmit: guard(err, async (e) => {
+      e.preventDefault();
+      adminState = await api('PUT', '/api/admin/settings', {
+        intro: intro.value,
+        gameStartTime: startTime.value, timezone: timezone.value, lateCancelHours: Number(lateHours.value),
+      });
+      adminTab = 'settings';
+      renderAdmin();
+    }),
+  }, h('h2', {}, 'Settings'),
+  h('label', {}, 'Intro and rules'), intro,
+  h('label', {}, 'Game start time (24-hour, in the time zone below)'), startTime,
+  h('label', {}, 'Time zone (IANA name, e.g. America/Chicago)'), timezone, zones,
+  h('label', {}, 'Cancellations closer than this many hours to game start count as late'), lateHours,
+  h('div', { class: 'row', style: 'margin-top:12px' }, h('button', { type: 'submit' }, 'Save settings')), err);
+}
+
+function loadInto(key, url, field) {
+  api('GET', url).then((data) => {
+    if (key === 'events') adminEvents = data[field]; else adminPlayers = data[field];
+    renderAdmin();
+  }).catch((err) => {
+    if (err.status === 401) renderAdminLogin();
+    else app.replaceChildren(h('p', { class: 'error' }, err.message));
+  });
+}
+
+function detailsText(e) {
+  const { dateLabel, hoursBeforeGame, late, ...rest } = e.details || {};
+  return Object.entries(rest).map(([k, val]) => `${k}: ${val}`).join(', ');
+}
+
+function activityTab() {
+  if (!adminEvents) {
+    loadInto('events', '/api/admin/events', 'events');
+    return h('p', { class: 'muted' }, 'Loading...');
+  }
+  const dates = new Map(adminState.dates.map((d) => [d.id, d.label]));
+  for (const e of adminEvents) if (e.dateId && !dates.has(e.dateId)) dates.set(e.dateId, (e.details && e.details.dateLabel) || e.dateId);
+  const types = [...new Set(adminEvents.map((e) => e.type))].sort();
+
+  const dateSel = h('select', { onchange: () => { activityFilter.dateId = dateSel.value; draw(); } },
+    h('option', { value: '' }, 'All dates'), [...dates].map(([id, label]) => h('option', { value: id }, label)));
+  const typeSel = h('select', { onchange: () => { activityFilter.type = typeSel.value; draw(); } },
+    h('option', { value: '' }, 'All types'), types.map((t) => h('option', { value: t }, t)));
+  const text = h('input', { type: 'text', placeholder: 'Search name or email', value: activityFilter.q, oninput: () => { activityFilter.q = text.value; draw(); } });
+  dateSel.value = activityFilter.dateId;
+  typeSel.value = activityFilter.type;
+
+  const count = h('p', { class: 'muted' });
+  const tbody = h('tbody', {});
+  function draw() {
+    const q = activityFilter.q.trim().toLowerCase();
+    const list = adminEvents.filter((e) =>
+      (!activityFilter.dateId || e.dateId === activityFilter.dateId)
+      && (!activityFilter.type || e.type === activityFilter.type)
+      && (!q || `${e.name || ''} ${e.email || ''}`.toLowerCase().includes(q)));
+    count.textContent = `${list.length} of ${adminEvents.length} events`;
+    tbody.replaceChildren(...list.map((e) => {
+      const hrs = e.details && e.details.hoursBeforeGame;
+      return h('tr', {},
+        h('td', {}, when(e.ts)), h('td', {}, e.type), h('td', {}, e.actor),
+        h('td', {}, e.name || ''), h('td', {}, e.email || ''),
+        h('td', {}, (e.details && e.details.dateLabel) || e.dateId || ''), h('td', {}, e.category || ''),
+        h('td', {}, hrs === undefined || hrs === null ? '' : `${hrs}h`, e.details && e.details.late ? h('span', { class: 'late' }, ' LATE') : null),
+        h('td', {}, detailsText(e)));
+    }));
+  }
+  draw();
+  return h('div', { class: 'card' }, h('h2', {}, 'Activity'),
+    h('div', { class: 'fields' }, h('div', {}, h('label', {}, 'Date'), dateSel), h('div', {}, h('label', {}, 'Type'), typeSel), h('div', {}, h('label', {}, 'Search'), text)),
+    count,
+    h('div', { class: 'table-wrap' }, h('table', {},
+      h('thead', {}, h('tr', {}, ['When', 'Type', 'Actor', 'Name', 'Email', 'Date', 'Cat', 'Before game', 'Details'].map((t) => h('th', {}, t)))),
+      tbody)));
+}
+
+const playerCols = [['name', 'Name'], ['email', 'Email'], ['category', 'Category'], ['signups', 'Signups'], ['cancels', 'Cancels'],
+  ['lateCancels', 'Late cancels'], ['noShows', 'No-shows'], ['attended', 'Attended']];
+let playerSort = { key: 'name', dir: 1 };
+
+function playersTab() {
+  if (!adminPlayers) {
+    loadInto('players', '/api/admin/players', 'players');
+    return h('p', { class: 'muted' }, 'Loading...');
+  }
+  const { key, dir } = playerSort;
+  const sorted = [...adminPlayers].sort((a, b) =>
+    (typeof a[key] === 'number' ? a[key] - b[key] : String(a[key]).localeCompare(String(b[key]))) * dir);
+  return h('div', { class: 'card' }, h('h2', {}, `Players (${sorted.length})`),
+    h('p', { class: 'muted' }, 'Counts cover activity recorded since event logging began. Click a header to sort.'),
+    sorted.length ? h('div', { class: 'table-wrap' }, h('table', {},
+      h('thead', {}, h('tr', {}, playerCols.map(([k, label]) => h('th', {
+        class: 'sortable',
+        onclick: () => { playerSort = { key: k, dir: playerSort.key === k ? -playerSort.dir : 1 }; renderAdmin(); },
+      }, label, playerSort.key === k ? (playerSort.dir === 1 ? ' ▲' : ' ▼') : '')))),
+      h('tbody', {}, sorted.map((p) => h('tr', {}, playerCols.map(([k]) => h('td', {}, p[k]))))))) : h('p', { class: 'muted' }, 'No players yet.'));
+}
+
+function refundsTab() {
+  const err = errorBox();
+  const owed = adminState.refunds.filter((r) => r.status === 'owed');
+  const done = adminState.refunds.filter((r) => r.status !== 'owed');
+  return [err, h('div', { class: 'card' }, h('h2', {}, `Refunds owed (${owed.length})`),
+    owed.length ? h('div', { class: 'table-wrap' }, h('table', {},
+      h('thead', {}, h('tr', {}, ['Name', 'Email', 'Date', 'Amount', 'Created', ''].map((t) => h('th', {}, t)))),
+      h('tbody', {}, owed.map((r) => h('tr', {},
+        h('td', {}, r.name), h('td', {}, r.email), h('td', {}, r.dateLabel), h('td', {}, money(r.amount)), h('td', {}, when(r.createdAt)),
+        h('td', {}, h('button', { onclick: adminAction(err, 'POST', '/api/admin/refunds/refunded', { id: r.id }) }, 'Mark refunded'))))))) : h('p', { class: 'muted' }, 'No refunds owed.')),
+  done.length ? h('div', { class: 'card' }, h('h2', {}, 'History'),
+    h('div', { class: 'table-wrap' }, h('table', {},
+      h('thead', {}, h('tr', {}, ['Name', 'Date', 'Amount', 'Status'].map((t) => h('th', {}, t)))),
+      h('tbody', {}, done.map((r) => h('tr', {}, h('td', {}, r.name), h('td', {}, r.dateLabel), h('td', {}, money(r.amount)),
+        h('td', {}, r.status === 'voided' ? 'Voided (credit applied)' : 'Refunded'))))))) : null];
+}
+
+start();
+</script>
+</body>
+</html>

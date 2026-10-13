@@ -1,0 +1,209 @@
+{
+  "settings": {
+    "intro": "Please send payment when signing up. Suggested payment is $8-10/night but PWYC.\nVenmo: @aphan\nZelle: 5127857660\n\nIf you cancel please text me and I will refund you. Everyone on the waitlist will be notified via email if a spot opens up, the open spot will be filled first-come first-serve.\n\nField: 1/4 field reservation\nRatio: Mixed 2:2. I may convert 1-2 games to WMP only.",
+    "gameStartTime": "21:30",
+    "timezone": "America/Chicago",
+    "lateCancelHours": 4,
+    "venmo": "aphan",
+    "zelle": "5127857660",
+    "contactEmail": "anniephan96@gmail.com"
+  },
+  "dates": [
+    {
+      "id": "2026-11-18",
+      "date": "2026-11-18",
+      "label": "Wed, Nov 18",
+      "mmp": 10,
+      "wmp": 10,
+      "fee": 10
+    },
+    {
+      "id": "2026-11-25",
+      "date": "2026-11-25",
+      "label": "Wed, Nov 25",
+      "mmp": 10,
+      "wmp": 10,
+      "fee": 10
+    },
+    {
+      "id": "2026-12-02",
+      "date": "2026-12-02",
+      "label": "Wed, Dec 2",
+      "mmp": 10,
+      "wmp": 10,
+      "fee": 10
+    },
+    {
+      "id": "2026-12-09",
+      "date": "2026-12-09",
+      "label": "Wed, Dec 9",
+      "mmp": 10,
+      "wmp": 10,
+      "fee": 10
+    },
+    {
+      "id": "2026-12-16",
+      "date": "2026-12-16",
+      "label": "Wed, Dec 16",
+      "mmp": 10,
+      "wmp": 10,
+      "fee": 10
+    }
+  ],
+  "players": {
+    "anniephan96@gmail.com": {
+      "email": "anniephan96@gmail.com",
+      "name": "Annie",
+      "category": "WMP",
+      "createdAt": "2026-10-13T16:55:48.854Z"
+    }
+  },
+  "registrations": [
+    {
+      "email": "anniephan96@gmail.com",
+      "date": "2026-11-25",
+      "category": "WMP",
+      "signedUpAt": "2026-10-13T16:55:56.665Z",
+      "paid": true,
+      "paidAmount": 10
+    },
+    {
+      "email": "anniephan96@gmail.com",
+      "date": "2026-12-02",
+      "category": "WMP",
+      "signedUpAt": "2026-10-13T16:55:58.730Z",
+      "paid": true,
+      "paidAmount": 10
+    },
+    {
+      "email": "anniephan96@gmail.com",
+      "date": "2026-12-09",
+      "category": "WMP",
+      "signedUpAt": "2026-10-13T16:56:00.621Z",
+      "paid": true,
+      "paidAmount": 10
+    },
+    {
+      "email": "anniephan96@gmail.com",
+      "date": "2026-12-16",
+      "category": "WMP",
+      "signedUpAt": "2026-10-13T16:56:02.637Z",
+      "paid": true,
+      "paidAmount": 10
+    },
+    {
+      "email": "anniephan96@gmail.com",
+      "date": "2026-11-18",
+      "category": "WMP",
+      "signedUpAt": "2026-10-13T17:04:42.823Z",
+      "paid": true,
+      "attendance": null,
+      "paidAmount": 10
+    }
+  ],
+  "refunds": [],
+  "nextRefundId": 1,
+  "events": [
+    {
+      "id": 1,
+      "ts": "2026-10-13T17:04:41.681Z",
+      "type": "cancel",
+      "actor": "player",
+      "email": "anniephan96@gmail.com",
+      "name": "Annie",
+      "dateId": "2026-11-18",
+      "category": "WMP",
+      "details": {
+        "dateLabel": "Wed, Nov 18",
+        "hoursBeforeGame": 874.42,
+        "late": false,
+        "wasPaid": false
+      }
+    },
+    {
+      "id": 2,
+      "ts": "2026-10-13T17:04:42.823Z",
+      "type": "signup",
+      "actor": "player",
+      "email": "anniephan96@gmail.com",
+      "name": "Annie",
+      "dateId": "2026-11-18",
+      "category": "WMP",
+      "details": {
+        "dateLabel": "Wed, Nov 18",
+        "status": "confirmed",
+        "creditApplied": false
+      }
+    },
+    {
+      "id": 3,
+      "ts": "2026-10-13T17:09:49.431Z",
+      "type": "paid",
+      "actor": "admin",
+      "email": "anniephan96@gmail.com",
+      "name": "Annie",
+      "dateId": "2026-11-18",
+      "category": "WMP",
+      "details": {
+        "dateLabel": "Wed, Nov 18",
+        "amount": 10
+      }
+    },
+    {
+      "id": 4,
+      "ts": "2026-10-13T17:09:51.787Z",
+      "type": "paid",
+      "actor": "admin",
+      "email": "anniephan96@gmail.com",
+      "name": "Annie",
+      "dateId": "2026-11-25",
+      "category": "WMP",
+      "details": {
+        "dateLabel": "Wed, Nov 25",
+        "amount": 10
+      }
+    },
+    {
+      "id": 5,
+      "ts": "2026-10-13T17:09:52.576Z",
+      "type": "paid",
+      "actor": "admin",
+      "email": "anniephan96@gmail.com",
+      "name": "Annie",
+      "dateId": "2026-12-02",
+      "category": "WMP",
+      "details": {
+        "dateLabel": "Wed, Dec 2",
+        "amount": 10
+      }
+    },
+    {
+      "id": 6,
+      "ts": "2026-10-13T17:09:54.752Z",
+      "type": "paid",
+      "actor": "admin",
+      "email": "anniephan96@gmail.com",
+      "name": "Annie",
+      "dateId": "2026-12-09",
+      "category": "WMP",
+      "details": {
+        "dateLabel": "Wed, Dec 9",
+        "amount": 10
+      }
+    },
+    {
+      "id": 7,
+      "ts": "2026-10-13T17:09:56.437Z",
+      "type": "paid",
+      "actor": "admin",
+      "email": "anniephan96@gmail.com",
+      "name": "Annie",
+      "dateId": "2026-12-16",
+      "category": "WMP",
+      "details": {
+        "dateLabel": "Wed, Dec 16",
+        "amount": 10
+      }
+    }
+  ]
+}
